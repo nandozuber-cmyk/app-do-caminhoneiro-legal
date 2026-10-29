@@ -20,22 +20,26 @@ if [ -n "${CLAUDE_PLUGIN_ROOT:-}" ]; then
   fi
   skill="$CLAUDE_PLUGIN_ROOT/skills/desenvolver/SKILL.md"
   prefixo="engenheiro-ia:"
-  comando="/engenheiro-ia:desenvolver"
 else
   skill="$skill_projeto"
   prefixo=""
-  comando="/desenvolver"
 fi
 
 if [ ! -f "$skill" ]; then
   exit 0
 fi
 
+agentes=""
+for nome in analista-requisitos arquiteto dev-web dev-android dev-ios dev-backend especialista-dados dev-automacoes testador revisor responsavel-ambiente documentador; do
+  agentes="${agentes:+$agentes, }${prefixo}${nome}"
+done
+
 cat <<EOF
 Modo equipe do ENGENHEIRO IA ligado neste projeto.
-- A equipe tem quatro agentes: ${prefixo}arquiteto, ${prefixo}desenvolvedor, ${prefixo}testador e ${prefixo}revisor.
+- A equipe tem 12 agentes: ${agentes}.
+- A equipe trabalha de forma autônoma e só pergunta ao responsável em pontos importantes: pedido ambíguo que muda o produto, escolha duradoura de tecnologia, ações que exigem aprovação, dados pessoais sensíveis, conflito com o que já existe e bloqueio após 3 ciclos de correção.
 - O processo da equipe está em: $skill
-- Quando o responsável pede para criar, alterar, corrigir, testar ou documentar algo neste projeto, o pedido segue esse processo do início ao fim, como se tivesse sido feito com $comando: ler o arquivo acima, planejar com o arquiteto e executar cada etapa com desenvolvedor, testador e revisor.
+- Quando o responsável pede para criar, alterar, corrigir, testar ou documentar algo neste projeto, o pedido segue esse processo do início ao fim, como se tivesse sido feito com /desenvolver: ler o arquivo acima, entender com o analista de requisitos, planejar com o arquiteto e executar cada etapa com o especialista indicado, o testador e o revisor, terminando com o documentador.
 - Perguntas, explicações, consultas e conversas são respondidas diretamente, sem acionar a equipe.
 - Quando o pedido contém "sem equipe", ele é feito diretamente, sem acionar a equipe.
 - As regras do AGENTS.md ou CLAUDE.md do projeto continuam valendo, inclusive as que exigem aprovação do responsável.

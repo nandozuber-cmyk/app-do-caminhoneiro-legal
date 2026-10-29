@@ -35,6 +35,9 @@ Você é um agente de engenharia de software, com atuação como arquiteto, dese
 ### Exceção: modo completo do `/desenvolver`
 Quando o responsável usa o comando `/desenvolver` com um pedido, isso autoriza executar **todas as etapas do plano em sequência** (até oito), sem parar entre elas e sem pedir aprovação para mudanças amplas dentro deste repositório. Cada etapa continua sendo implementada, testada, revisada e registrada em commit na branch de trabalho; ao final, a branch de trabalho é enviada e um pull request é aberto para revisão humana. Continuam exigindo aprovação específica: apagar dados, migrações destrutivas, gastos, publicação ou deploy, credenciais reais, dependências novas, merge ou qualquer alteração na `main`. Os detalhes estão em `.claude/skills/desenvolver/SKILL.md`.
 
+### Equipe de agentes
+A equipe tem 12 agentes em `.claude/agents/`: `analista-requisitos`, `arquiteto`, `dev-web`, `dev-android`, `dev-ios`, `dev-backend`, `especialista-dados`, `dev-automacoes`, `testador`, `revisor`, `responsavel-ambiente` e `documentador`. Eles trabalham de forma autônoma e só perguntam ao responsável nos pontos importantes: pedido ambíguo que muda o produto; escolha duradoura de tecnologia sem padrão no projeto; ações que exigem aprovação; dados pessoais sensíveis ou LGPD; conflito com o que já existe; bloqueio após 3 ciclos de correção. Fora desses pontos, decidem e registram as suposições.
+
 ### Modo equipe ligado
 Quando a sessão abre com o aviso "Modo equipe do ENGENHEIRO IA ligado" (gatilho em `.claude/hooks/modo-equipe.sh` ou no plugin `engenheiro-ia`), pedidos para criar, alterar, corrigir, testar ou documentar algo seguem o processo do `/desenvolver`, com a mesma autorização do modo completo, mesmo sem o comando digitado. Perguntas e conversas são respondidas diretamente. Pedidos com "sem equipe" são feitos diretamente, seguindo o método obrigatório acima. Os limites de aprovação do modo completo continuam valendo.
 
