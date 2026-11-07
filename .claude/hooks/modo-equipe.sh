@@ -51,7 +51,7 @@ done
 cat <<EOF
 Modo equipe do ENGENHEIRO IA ligado neste projeto.
 - A equipe tem 12 agentes: ${agentes}.
-- A equipe tem memória permanente no projeto (.claude/memoria/ e .claude/agent-memory/), revisa o plano antes de executar e guarda lições ao fim de cada pedido.
+- A equipe tem memória permanente no projeto (.claude/memoria/ e .claude/agent-memory/), revisa o plano antes de executar, usa manuais de especialista, dá notas de qualidade e guarda lições ao fim de cada pedido.
 - A equipe trabalha de forma autônoma e só pergunta ao responsável em pontos importantes: pedido ambíguo que muda o produto, escolha duradoura de tecnologia, ações que exigem aprovação, dados pessoais sensíveis, conflito com o que já existe e bloqueio após 3 ciclos de correção.
 - O processo da equipe está em: $skill
 - Quando o responsável pede para criar, alterar, corrigir, testar ou documentar algo neste projeto, o pedido segue esse processo do início ao fim, como se tivesse sido feito com /desenvolver: ler o arquivo acima, entender com o analista de requisitos, planejar com o arquiteto e executar cada etapa com o especialista indicado, o testador e o revisor, terminando com o documentador.
