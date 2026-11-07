@@ -45,6 +45,11 @@ $ARGUMENTS
 - **Método de raciocínio.** Todos seguem "Como pensar": entender antes de agir, comparar alternativas, pré-mortem, conferir a documentação oficial, autocrítica e nível de confiança no relatório.
 - **Plano revisado antes de executar.** Em pedidos médios e grandes, o `revisor` critica o plano do `arquiteto` antes de qualquer código (passo 2.1).
 - **Retrospectiva.** No fim, você monta a retrospectiva do pedido e o `documentador` guarda as lições, para a equipe não repetir os mesmos erros.
+- **Manuais de especialista.** Cada agente carrega os manuais que importam para o seu papel (skills `conhecimento-seguranca`, `conhecimento-acessibilidade`, `conhecimento-testes`, `conhecimento-mobile`, `conhecimento-dados`) e os usa como lista de verificação.
+- **Pesquisa.** Todos podem pesquisar na internet (WebSearch) e ler a documentação oficial; o `arquiteto` pesquisa antes de escolher tecnologia nova e cita as fontes.
+- **Trava técnica.** O `analista-requisitos`, o `arquiteto` e o `revisor` têm um gatilho (`.claude/hooks/so-memoria.sh`) que bloqueia qualquer Edit ou Write fora da pasta de memória.
+- **Notas de qualidade.** O `revisor` dá nota de 0 a 10 em seis critérios; nota abaixo de 7 vem com bloqueante e a etapa volta ao executor.
+- **Perfil do responsável.** `.claude/memoria/RESPONSAVEL.md` diz como o responsável gosta de trabalhar e receber respostas; vale para todos os agentes e para você.
 
 Quando a equipe vem do plugin `engenheiro-ia`, os nomes têm prefixo (`engenheiro-ia:analista-requisitos`, `engenheiro-ia:dev-web` e assim por diante). Use o nome que aparecer na lista de agentes disponíveis. Se um agente não estiver disponível, use um agente de uso geral e envie a ele o conteúdo do arquivo do agente (`.claude/agents/<nome>.md` do projeto ou, se não houver, `~/.claude/agents/<nome>.md`) como instrução; registre isso na trilha.
 
@@ -89,7 +94,7 @@ f) Bloqueio depois de esgotar 3 ciclos de correção numa etapa.
 2. Se a pasta atual não for um repositório git, procure o projeto citado no pedido e trabalhe na pasta dele; se não houver como saber, é o ponto importante (a).
 3. Se a branch atual for `main` (ou `master`), crie uma branch de trabalho `feat/<resumo-curto>`, `fix/<resumo-curto>` ou `chore/<resumo-curto>` com `git switch -c` antes de qualquer alteração.
 4. Se houver alterações locais que não são deste pedido, não as descarte nem as inclua nos commits: registre e siga trabalhando só nos arquivos do pedido.
-5. Leia a memória da equipe (`.claude/memoria/PROJETO.md`, `DECISOES.md` e `LICOES.md`), se existir, e use-a em todas as chamadas. Se não existir, o `documentador` cria no passo 5.
+5. Leia a memória da equipe (`.claude/memoria/RESPONSAVEL.md`, `PROJETO.md`, `DECISOES.md` e `LICOES.md`), se existir, e use-a em todas as chamadas. Se não existir, o `documentador` cria no passo 5.
 6. Classifique o pedido: **pequeno** (uma etapa evidente, poucos arquivos), **médio** (2 ou 3 etapas) ou **grande** (4 etapas ou mais, ou com ponto b). Pedido pequeno dispensa a revisão do plano (passo 2.1); todos os outros passos continuam valendo.
 
 ### 1. Entender — `analista-requisitos`
@@ -107,7 +112,8 @@ Chame antes da primeira etapa se o projeto for novo, se o arquiteto pedir, ou se
 ### 4. Executar cada etapa, em ordem
 1. **Implementar — executor indicado pelo arquiteto** (`dev-web`, `dev-android`, `dev-ios`, `dev-backend`, `especialista-dados` ou `dev-automacoes`). Se a etapa não tiver executor, escolha pelo tipo de arquivo e registre.
 2. **Verificar — `testador`.** **REPROVADO** por defeito: devolva ao executor (conta um ciclo) e chame o `testador` de novo. Falha por ambiente: chame o `responsavel-ambiente` (não conta ciclo) e depois o `testador`.
-3. **Revisar — `revisor`.** **PRECISA DE AJUSTES** com bloqueantes: devolva ao executor (conta um ciclo), depois `testador` e `revisor` de novo. Sugestões não bloqueantes não geram ciclo: guarde-as para o relatório.
+3. **Revisar — `revisor`.** **PRECISA DE AJUSTES** com bloqueantes, ou qualquer nota abaixo de 7: devolva ao executor (conta um ciclo), depois `testador` e `revisor` de novo.
+   - **Revisão em dupla:** em pedidos grandes, ou quando a etapa mexe com login, permissões, pagamento, dados pessoais, exclusão de dados ou integrações externas, chame **dois** `revisor` ao mesmo tempo (na mesma mensagem): um com foco em **correção e testes**, outro com foco em **segurança, dados e LGPD**. A etapa só avança com os dois em PRONTO PARA ENTREGA. Sugestões não bloqueantes não geram ciclo: guarde-as para o relatório.
 4. **Registrar:** com testador APROVADO e revisor PRONTO PARA ENTREGA, confira `git status` e `git diff --stat` (só arquivos do pedido), faça `git add` dos arquivos da etapa e das memórias que os agentes atualizaram (`.claude/agent-memory/`) e um commit com mensagem clara (`feat: ...`, `fix: ...`, `test: ...`, `docs: ...`). Siga **direto** para a próxima etapa.
 
 ### 5. Documentar — `documentador`
@@ -136,7 +142,9 @@ Use exatamente esta estrutura, com linguagem simples e passos numerados:
 
 **Perguntas feitas**: o que foi perguntado ao responsável e a resposta, ou "Nenhuma".
 
-**Trilha da equipe**: uma linha por chamada: etapa, agente, veredito e ciclo (ex.: "etapa 2, testador: REPROVADO (ciclo 1), 1 defeito").
+**Trilha da equipe**: uma linha por chamada: etapa, agente, veredito, ciclo e, para o revisor, a menor nota (ex.: "etapa 2, testador: REPROVADO (ciclo 1), 1 defeito"; "etapa 2, revisor: PRONTO PARA ENTREGA, menor nota 8 (Testes)").
+
+**Qualidade**: as notas finais do revisor por critério, de cada etapa.
 
 **Aprendizados guardados**: o que entrou na memória da equipe e dos agentes neste pedido, em tópicos curtos.
 
