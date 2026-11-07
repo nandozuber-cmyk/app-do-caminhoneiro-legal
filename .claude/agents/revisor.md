@@ -3,7 +3,7 @@ name: revisor
 description: "Use depois do testador para revisar o diff da etapa: clareza, segurança, privacidade/LGPD, riscos a dados do usuário e possíveis defeitos, antes do commit. Não altera arquivos."
 tools: Read, Glob, Grep, Bash, WebFetch, WebSearch, Edit, Write
 disallowedTools: Agent
-model: fable
+model: opus
 effort: max
 memory: project
 skills: [conhecimento-seguranca, conhecimento-testes, conhecimento-acessibilidade, conhecimento-dados]

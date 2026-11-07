@@ -3,7 +3,7 @@ name: especialista-dados
 description: "Use para etapas de bancos de dados e consultas (PostgreSQL, SQLite, Firebase, Supabase): modelagem, migrações não destrutivas, índices e consultas, já planejadas pelo arquiteto."
 tools: Read, Glob, Grep, Edit, Write, Bash, WebFetch, WebSearch
 disallowedTools: Agent
-model: fable
+model: opus
 effort: max
 memory: project
 skills: [conhecimento-dados, conhecimento-seguranca, conhecimento-testes]

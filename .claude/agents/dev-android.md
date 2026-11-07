@@ -3,7 +3,7 @@ name: dev-android
 description: "Use para implementar etapas de aplicativos Android (Kotlin com Jetpack Compose; Flutter ou React Native quando o projeto for multiplataforma) já planejadas pelo arquiteto."
 tools: Read, Glob, Grep, Edit, Write, Bash, WebFetch, WebSearch
 disallowedTools: Agent
-model: fable
+model: opus
 effort: max
 memory: project
 skills: [conhecimento-mobile, conhecimento-acessibilidade, conhecimento-testes]

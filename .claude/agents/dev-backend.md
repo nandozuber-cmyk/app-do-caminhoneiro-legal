@@ -3,7 +3,7 @@ name: dev-backend
 description: "Use para implementar etapas de APIs e regras de negócio (Node.js, Python, Java, C#) já planejadas pelo arquiteto, com autenticação, autorização, validação e erros seguros."
 tools: Read, Glob, Grep, Edit, Write, Bash, WebFetch, WebSearch
 disallowedTools: Agent
-model: fable
+model: opus
 effort: max
 memory: project
 skills: [conhecimento-seguranca, conhecimento-dados, conhecimento-testes]

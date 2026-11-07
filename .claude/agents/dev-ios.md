@@ -3,7 +3,7 @@ name: dev-ios
 description: "Use para implementar etapas de aplicativos para iPhone e iPad (Swift com SwiftUI) já planejadas pelo arquiteto."
 tools: Read, Glob, Grep, Edit, Write, Bash, WebFetch, WebSearch
 disallowedTools: Agent
-model: fable
+model: opus
 effort: max
 memory: project
 skills: [conhecimento-mobile, conhecimento-acessibilidade, conhecimento-testes]
