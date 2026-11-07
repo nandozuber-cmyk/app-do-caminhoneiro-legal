@@ -3,8 +3,8 @@ name: dev-automacoes
 description: "Use para etapas de automação de tarefas e integrações (scripts, webhooks, agendamentos, APIs de terceiros) já planejadas pelo arquiteto, sempre sem credenciais reais."
 tools: Read, Glob, Grep, Edit, Write, Bash, WebFetch, WebSearch
 disallowedTools: Agent
-model: inherit
-effort: high
+model: fable
+effort: max
 memory: project
 skills: [conhecimento-seguranca, conhecimento-testes]
 color: orange

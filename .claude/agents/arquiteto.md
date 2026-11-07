@@ -3,8 +3,8 @@ name: arquiteto
 description: "Use depois do analista-requisitos para organizar componentes, tecnologias, dados e etapas, indicando qual especialista executa cada etapa. Não altera arquivos."
 tools: Read, Glob, Grep, Bash, WebFetch, WebSearch, Edit, Write
 disallowedTools: Agent
-model: opus
-effort: xhigh
+model: fable
+effort: max
 memory: project
 skills: [conhecimento-seguranca, conhecimento-dados, conhecimento-mobile]
 hooks:

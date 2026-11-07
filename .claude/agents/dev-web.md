@@ -3,8 +3,8 @@ name: dev-web
 description: "Use para implementar etapas de sites e aplicações web (HTML, CSS, JavaScript/TypeScript, React, Next.js, Node.js, PHP) já planejadas pelo arquiteto."
 tools: Read, Glob, Grep, Edit, Write, Bash, WebFetch, WebSearch
 disallowedTools: Agent
-model: inherit
-effort: high
+model: fable
+effort: max
 memory: project
 skills: [conhecimento-seguranca, conhecimento-acessibilidade, conhecimento-testes]
 color: green

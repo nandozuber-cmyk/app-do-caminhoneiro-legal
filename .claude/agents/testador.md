@@ -3,8 +3,8 @@ name: testador
 description: "Use depois de cada especialista para verificar de forma independente a etapa contra os critérios de aceitação, executando a suíte e o sistema real com casos de erro e investigando a causa das falhas. Pode criar testes; não corrige código da aplicação."
 tools: Read, Glob, Grep, Edit, Write, Bash, WebFetch, WebSearch
 disallowedTools: Agent
-model: inherit
-effort: high
+model: fable
+effort: max
 memory: project
 skills: [conhecimento-testes, conhecimento-acessibilidade, conhecimento-seguranca]
 color: yellow

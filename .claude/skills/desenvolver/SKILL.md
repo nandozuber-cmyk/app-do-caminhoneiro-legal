@@ -3,6 +3,8 @@ name: desenvolver
 description: Executa um pedido de desenvolvimento completo com a equipe de 12 agentes (analista de requisitos, arquiteto, especialistas, testador, revisor, responsável pelo ambiente e documentador), etapa após etapa, até entregar o pedido inteiro numa branch de trabalho com pull request para revisão humana. Pergunta ao responsável só em pontos importantes.
 argument-hint: "[pedido em linguagem natural]"
 disable-model-invocation: true
+model: fable
+effort: max
 allowed-tools: Bash(git status *) Bash(git status) Bash(git branch *) Bash(git diff *) Bash(git diff) Bash(git log *) Bash(git add *) Bash(git commit *) Bash(git switch -c *) Bash(git checkout -b *) Bash(git push -u origin feat/*) Bash(git push -u origin fix/*) Bash(git push -u origin chore/*) Bash(node --test *) Bash(npm test) Bash(npm test *)
 ---
 
@@ -41,7 +43,8 @@ $ARGUMENTS
 ## Inteligência da equipe
 
 - **Memória permanente.** Cada agente tem memória própria em `.claude/agent-memory/<nome>/MEMORY.md`, e a equipe tem memória comum em `.claude/memoria/` (`PROJETO.md`, `DECISOES.md`, `LICOES.md`, mantidos pelo `documentador`). As duas ficam no repositório, entram nos commits e acompanham o projeto entre conversas, computadores e sessões na nuvem.
-- **Cérebro por papel.** O `analista-requisitos`, o `arquiteto` e o `revisor` usam o modelo mais forte (`opus`) com raciocínio alto; os demais usam o modelo da sessão. Isso fica no cabeçalho de cada agente.
+- **Inteligência máxima.** Você e os 12 agentes usam o modelo mais capaz (`fable`) com raciocínio no máximo (`effort: max`), definido no cabeçalho deste arquivo e de cada agente.
+- **Se o modelo não estiver disponível:** se a chamada de um agente falhar por modelo indisponível ou não permitido, chame o mesmo agente de novo passando o modelo `opus` na própria chamada, e registre isso na trilha. Se o `opus` também falhar, use o modelo da sessão (`inherit`).
 - **Método de raciocínio.** Todos seguem "Como pensar": entender antes de agir, comparar alternativas, pré-mortem, conferir a documentação oficial, autocrítica e nível de confiança no relatório.
 - **Plano revisado antes de executar.** Em pedidos médios e grandes, o `revisor` critica o plano do `arquiteto` antes de qualquer código (passo 2.1).
 - **Retrospectiva.** No fim, você monta a retrospectiva do pedido e o `documentador` guarda as lições, para a equipe não repetir os mesmos erros.
@@ -103,6 +106,8 @@ Envie o pedido. Receba objetivo, público, MVP, fora do escopo, critérios de ac
 ### 2. Planejar — `arquiteto`
 Envie o pedido e o escopo do analista. Receba stack, opções comparadas, componentes, riscos, pré-mortem, decisões para registrar e as etapas, cada uma com **executor**, arquivos, critérios, comandos de teste, como saber que está pronta e como desfazer.
 
+**Pedido grande: planejamento em dupla.** Chame **dois** `arquiteto` ao mesmo tempo (na mesma mensagem), independentes, cada um sem ver o plano do outro. Envie os dois planos ao `revisor` no passo 2.1, pedindo que compare, escolha o melhor ou combine os pontos fortes, com motivo. Use o plano resultante.
+
 ### 2.1 Revisar o plano — `revisor` (pedidos médios e grandes)
 Envie ao `revisor` o pedido, o escopo do analista e o plano completo, pedindo a **revisão do plano**. Se vier **PLANO COM AJUSTES**, devolva as críticas ao `arquiteto` uma única vez e use o plano atualizado. Críticas recusadas pelo arquiteto, com motivo, vão para a trilha. Isso não conta ciclo de correção.
 
@@ -121,6 +126,9 @@ Depois da última etapa, monte a **retrospectiva** do pedido: ciclos de correç�
 
 ### 6. Verificação final — `testador`
 Chame o `testador` com o pedido original e todos os critérios de todas as etapas, para rodar a suíte completa e confirmar que nada quebrou entre as etapas. Defeitos voltam ao executor da etapa (até 3 ciclos); cada correção passa de novo pelo `testador` e pelo `revisor` antes do commit.
+
+### 6.1 Revisão final do pedido inteiro — `revisor`
+Depois da verificação final, envie ao `revisor` o diff completo da branch (`git diff <branch-de-origem>...HEAD`), o pedido, o plano e os critérios, pedindo a **revisão do pedido inteiro**: problemas que só aparecem com todas as etapas juntas (duplicação entre etapas, inconsistência de nomes, regra quebrada por uma etapa posterior, documentação desatualizada). Bloqueantes voltam ao executor da etapa (até 3 ciclos), com `testador` e `revisor` de novo antes do commit.
 
 ### 7. Entregar
 1. Envie a branch de trabalho: `git push -u origin <branch-de-trabalho>`. Nunca para a `main`. Se o push falhar por rede, tente de novo até 4 vezes; se for negado, relate.
