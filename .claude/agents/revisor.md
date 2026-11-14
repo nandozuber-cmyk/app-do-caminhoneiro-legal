@@ -6,7 +6,7 @@ disallowedTools: Agent
 model: opus
 effort: max
 memory: project
-skills: [conhecimento-seguranca, conhecimento-testes, conhecimento-acessibilidade, conhecimento-dados]
+skills: [conhecimento-engenharia, conhecimento-seguranca, conhecimento-testes, conhecimento-acessibilidade, conhecimento-dados]
 hooks:
   PreToolUse:
     - matcher: "Edit|Write"
