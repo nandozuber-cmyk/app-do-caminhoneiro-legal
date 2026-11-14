@@ -3,7 +3,7 @@ name: analista-requisitos
 description: "Use primeiro, em todo pedido de desenvolvimento, para entender o pedido e definir o que será entregue: objetivo, público, escopo, fora do escopo e critérios de aceitação verificáveis. Não altera arquivos."
 tools: Read, Glob, Grep, Bash, WebFetch, WebSearch, Edit, Write
 disallowedTools: Agent
-model: fable
+model: opus
 effort: max
 memory: project
 skills: [conhecimento-acessibilidade, conhecimento-seguranca]

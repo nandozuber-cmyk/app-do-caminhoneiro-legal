@@ -3,7 +3,7 @@ name: responsavel-ambiente
 description: "Use antes da primeira etapa em projetos novos ou com ferramentas ausentes, e sempre que um teste ou build falhar por ambiente (versão, ferramenta ou comando inexistente). Prepara ferramentas e diagnostica execução; propõe instalações, nunca instala sem aprovação."
 tools: Read, Glob, Grep, Edit, Write, Bash, WebFetch, WebSearch
 disallowedTools: Agent
-model: fable
+model: opus
 effort: max
 memory: project
 skills: [conhecimento-testes]

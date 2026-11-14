@@ -3,7 +3,7 @@ name: documentador
 description: "Use no fim do pedido, e quando uma etapa mudar o uso do sistema, para produzir instruções de uso e manutenção (README, guias, passo a passo para iniciante pelo celular). Altera só arquivos .md."
 tools: Read, Glob, Grep, Edit, Write, Bash, WebFetch, WebSearch
 disallowedTools: Agent
-model: fable
+model: opus
 effort: max
 memory: project
 skills: [conhecimento-acessibilidade]

@@ -3,7 +3,7 @@ name: desenvolver
 description: Executa um pedido de desenvolvimento completo com a equipe de 12 agentes (analista de requisitos, arquiteto, especialistas, testador, revisor, responsável pelo ambiente e documentador), etapa após etapa, até entregar o pedido inteiro numa branch de trabalho com pull request para revisão humana. Pergunta ao responsável só em pontos importantes.
 argument-hint: "[pedido em linguagem natural]"
 disable-model-invocation: true
-model: fable
+model: opus
 effort: max
 allowed-tools: Bash(git status *) Bash(git status) Bash(git branch *) Bash(git diff *) Bash(git diff) Bash(git log *) Bash(git add *) Bash(git commit *) Bash(git switch -c *) Bash(git checkout -b *) Bash(git push -u origin feat/*) Bash(git push -u origin fix/*) Bash(git push -u origin chore/*) Bash(node --test *) Bash(npm test) Bash(npm test *)
 ---
@@ -43,8 +43,8 @@ $ARGUMENTS
 ## Inteligência da equipe
 
 - **Memória permanente.** Cada agente tem memória própria em `.claude/agent-memory/<nome>/MEMORY.md`, e a equipe tem memória comum em `.claude/memoria/` (`PROJETO.md`, `DECISOES.md`, `LICOES.md`, mantidos pelo `documentador`). As duas ficam no repositório, entram nos commits e acompanham o projeto entre conversas, computadores e sessões na nuvem.
-- **Inteligência máxima.** Você e os 12 agentes usam o modelo mais capaz (`fable`) com raciocínio no máximo (`effort: max`), definido no cabeçalho deste arquivo e de cada agente.
-- **Se o modelo não estiver disponível:** se a chamada de um agente falhar por modelo indisponível ou não permitido, chame o mesmo agente de novo passando o modelo `opus` na própria chamada, e registre isso na trilha. Se o `opus` também falhar, use o modelo da sessão (`inherit`).
+- **Inteligência máxima.** Você e os 12 agentes usam o modelo mais capaz liberado na conta do responsável (`opus`) com raciocínio no máximo (`effort: max`), definido no cabeçalho deste arquivo e de cada agente.
+- **Se o modelo não estiver disponível:** se a chamada de um agente falhar por modelo indisponível ou não permitido, chame o mesmo agente de novo passando o modelo `inherit` (o modelo da sessão) na própria chamada, e registre isso na trilha.
 - **Método de raciocínio.** Todos seguem "Como pensar": entender antes de agir, comparar alternativas, pré-mortem, conferir a documentação oficial, autocrítica e nível de confiança no relatório.
 - **Plano revisado antes de executar.** Em pedidos médios e grandes, o `revisor` critica o plano do `arquiteto` antes de qualquer código (passo 2.1).
 - **Retrospectiva.** No fim, você monta a retrospectiva do pedido e o `documentador` guarda as lições, para a equipe não repetir os mesmos erros.
