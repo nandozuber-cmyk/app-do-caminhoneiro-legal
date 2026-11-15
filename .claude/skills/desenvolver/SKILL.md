@@ -1,6 +1,6 @@
 ---
 name: desenvolver
-description: Executa um pedido de desenvolvimento completo com a equipe de 12 agentes (analista de requisitos, arquiteto, especialistas, testador, revisor, responsável pelo ambiente e documentador), etapa após etapa, até entregar o pedido inteiro numa branch de trabalho com pull request para revisão humana. Pergunta ao responsável só em pontos importantes.
+description: Executa um pedido de desenvolvimento completo com a equipe de 13 agentes (CEO, analista de requisitos, arquiteto, especialistas, testador, revisor, responsável pelo ambiente e documentador), etapa após etapa, até entregar o pedido inteiro numa branch de trabalho com pull request para revisão humana. Pergunta ao responsável só em pontos importantes.
 argument-hint: "[pedido em linguagem natural]"
 disable-model-invocation: true
 model: opus
@@ -25,6 +25,7 @@ $ARGUMENTS
 
 | Agente | Papel | Altera arquivos |
 | --- | --- | --- |
+| `ceo` | Dá a visão de negócio no início (valor, métrica, prioridade, custos, riscos) e o parecer de entrega com os próximos passos no fim | Não |
 | `analista-requisitos` | Entende o pedido e define o que será entregue e os critérios de aceitação | Não |
 | `arquiteto` | Organiza componentes, tecnologias, dados e etapas, e indica o executor de cada etapa | Não |
 | `dev-web` | Sites e aplicações web | Sim |
@@ -38,19 +39,19 @@ $ARGUMENTS
 | `responsavel-ambiente` | Prepara ferramentas e diagnostica execução | Só configuração de execução |
 | `documentador` | Produz instruções de uso e manutenção | Só `.md` |
 
-"Só testes", "só configuração de execução" e "só `.md`" são regras escritas em cada agente, não travas técnicas: o `revisor` confere se foram respeitadas. Todos os agentes também podem escrever na própria pasta de memória (`.claude/agent-memory/<nome>/`); o `analista-requisitos`, o `arquiteto` e o `revisor` não podem alterar mais nada.
+"Só testes", "só configuração de execução" e "só `.md`" são regras escritas em cada agente, não travas técnicas: o `revisor` confere se foram respeitadas. Todos os agentes também podem escrever na própria pasta de memória (`.claude/agent-memory/<nome>/`); o `ceo`, o `analista-requisitos`, o `arquiteto` e o `revisor` não podem alterar mais nada.
 
 ## Inteligência da equipe
 
 - **Memória permanente.** Cada agente tem memória própria em `.claude/agent-memory/<nome>/MEMORY.md`, e a equipe tem memória comum em `.claude/memoria/` (`PROJETO.md`, `DECISOES.md`, `LICOES.md`, mantidos pelo `documentador`). As duas ficam no repositório, entram nos commits e acompanham o projeto entre conversas, computadores e sessões na nuvem.
-- **Inteligência máxima.** Você e os 12 agentes usam o modelo mais capaz liberado na conta do responsável (`opus`) com raciocínio no máximo (`effort: max`), definido no cabeçalho deste arquivo e de cada agente.
+- **Inteligência máxima.** Você e os 13 agentes usam o modelo mais capaz liberado na conta do responsável (`opus`) com raciocínio no máximo (`effort: max`), definido no cabeçalho deste arquivo e de cada agente.
 - **Se o modelo não estiver disponível:** se a chamada de um agente falhar por modelo indisponível ou não permitido, chame o mesmo agente de novo passando o modelo `inherit` (o modelo da sessão) na própria chamada, e registre isso na trilha.
 - **Método de raciocínio.** Todos seguem "Como pensar": entender antes de agir, comparar alternativas, pré-mortem, conferir a documentação oficial, autocrítica e nível de confiança no relatório.
 - **Plano revisado antes de executar.** Em pedidos médios e grandes, o `revisor` critica o plano do `arquiteto` antes de qualquer código (passo 2.1).
 - **Retrospectiva.** No fim, você monta a retrospectiva do pedido e o `documentador` guarda as lições, para a equipe não repetir os mesmos erros.
 - **Manuais de especialista.** Cada agente carrega os manuais que importam para o seu papel (skills `conhecimento-seguranca`, `conhecimento-acessibilidade`, `conhecimento-testes`, `conhecimento-mobile`, `conhecimento-dados`) e os usa como lista de verificação.
 - **Pesquisa.** Todos podem pesquisar na internet (WebSearch) e ler a documentação oficial; o `arquiteto` pesquisa antes de escolher tecnologia nova e cita as fontes.
-- **Trava técnica.** O `analista-requisitos`, o `arquiteto` e o `revisor` têm um gatilho (`.claude/hooks/so-memoria.sh`) que bloqueia qualquer Edit ou Write fora da pasta de memória.
+- **Trava técnica.** O `ceo`, o `analista-requisitos`, o `arquiteto` e o `revisor` têm um gatilho (`.claude/hooks/so-memoria.sh`) que bloqueia qualquer Edit ou Write fora da pasta de memória.
 - **Notas de qualidade.** O `revisor` dá nota de 0 a 10 em seis critérios; nota abaixo de 7 vem com bloqueante e a etapa volta ao executor.
 - **Perfil do responsável.** `.claude/memoria/RESPONSAVEL.md` diz como o responsável gosta de trabalhar e receber respostas; vale para todos os agentes e para você.
 
@@ -85,7 +86,7 @@ f) Bloqueio depois de esgotar 3 ciclos de correção numa etapa.
 - Se um agente não conseguir executar algo por permissão e você tiver permissão, rode você mesmo a verificação citada e registre isso na trilha.
 - Ao devolver um defeito ao executor, envie o relatório completo do `testador` ou do `revisor` e peça a causa raiz e um teste que reproduza o defeito antes da correção.
 - Relatório com **Confiança: baixa** em algo importante não passa direto: peça ao agente o que reduziria a dúvida e providencie (outro teste, leitura da documentação, ajuda do `responsavel-ambiente`).
-- Depois de cada agente que não altera o projeto (`analista-requisitos`, `arquiteto`, `revisor`), confira com `git status --short` que só a pasta de memória dele mudou. Alteração fora dela não entra no commit: registre na trilha.
+- Depois de cada agente que não altera o projeto (`ceo`, `analista-requisitos`, `arquiteto`, `revisor`), confira com `git status --short` que só a pasta de memória dele mudou. Alteração fora dela não entra no commit: registre na trilha.
 - **Limite de correção:** no máximo **3 ciclos** de volta ao especialista **por etapa**, somando testador e revisor. Esgotado o limite numa etapa, não faça commit dela: tente uma abordagem mais simples uma única vez; se ainda falhar, é o ponto importante (f).
 - **Limite de tamanho:** no máximo **8 etapas** por pedido. Se o arquiteto planejar mais, execute as 8 primeiras e liste o restante como próximo pedido pronto para copiar.
 - Nunca, sem aprovação explícita do responsável nesta conversa: push para a `main`, `--force`, merge, publicação, deploy, instalação de dependências novas, serviços pagos, credenciais reais ou ações destrutivas.
@@ -100,8 +101,11 @@ f) Bloqueio depois de esgotar 3 ciclos de correção numa etapa.
 5. Leia a memória da equipe (`.claude/memoria/RESPONSAVEL.md`, `PROJETO.md`, `DECISOES.md` e `LICOES.md`), se existir, e use-a em todas as chamadas. Se não existir, o `documentador` cria no passo 5.
 6. Classifique o pedido: **pequeno** (uma etapa evidente, poucos arquivos), **médio** (2 ou 3 etapas) ou **grande** (4 etapas ou mais, ou com ponto b). Pedido pequeno dispensa a revisão do plano (passo 2.1); todos os outros passos continuam valendo.
 
+### 0.5 Visão de negócio — `ceo` (pedidos médios e grandes e projetos novos)
+Envie ao `ceo` o pedido e a memória da equipe. Receba proposta de valor, usuário e problema, métrica de sucesso, prioridade, custos, riscos, o que fica fora do foco e a recomendação. Com **SEGUIR**, envie a visão do CEO ao `analista-requisitos` e a todos os agentes seguintes. Com **SEGUIR COM AJUSTES** ou **NÃO SEGUIR AGORA**, pergunte ao responsável (ponto a) com as opções do CEO, antes de qualquer código. Pedido pequeno dispensa este passo.
+
 ### 1. Entender — `analista-requisitos`
-Envie o pedido. Receba objetivo, público, MVP, fora do escopo, critérios de aceitação e requisitos não funcionais. Se vier **PERGUNTA PARA O RESPONSÁVEL**, pergunte agora (é o momento mais barato para isso).
+Envie o pedido e a visão do CEO, quando houver. Receba objetivo, público, MVP, fora do escopo, critérios de aceitação e requisitos não funcionais. Se vier **PERGUNTA PARA O RESPONSÁVEL**, pergunte agora (é o momento mais barato para isso).
 
 ### 2. Planejar — `arquiteto`
 Envie o pedido e o escopo do analista. Receba stack, opções comparadas, componentes, riscos, pré-mortem, decisões para registrar e as etapas, cada uma com **executor**, arquivos, critérios, comandos de teste, como saber que está pronta e como desfazer.
@@ -130,6 +134,9 @@ Chame o `testador` com o pedido original e todos os critérios de todas as etapa
 ### 6.1 Revisão final do pedido inteiro — `revisor`
 Depois da verificação final, envie ao `revisor` o diff completo da branch (`git diff <branch-de-origem>...HEAD`), o pedido, o plano e os critérios, pedindo a **revisão do pedido inteiro**: problemas que só aparecem com todas as etapas juntas (duplicação entre etapas, inconsistência de nomes, regra quebrada por uma etapa posterior, documentação desatualizada). Bloqueantes voltam ao executor da etapa (até 3 ciclos), com `testador` e `revisor` de novo antes do commit.
 
+### 6.2 Parecer de entrega — `ceo` (quando houve o passo 0.5)
+Envie ao `ceo` a visão do início, o plano, os relatórios finais e o resumo do diff. Receba o valor entregue, o que ainda falta para o usuário e os **3 próximos passos** priorizados, como pedidos prontos para copiar. Use-os no relatório final.
+
 ### 7. Entregar
 1. Envie a branch de trabalho: `git push -u origin <branch-de-trabalho>`. Nunca para a `main`. Se o push falhar por rede, tente de novo até 4 vezes; se for negado, relate.
 2. Abra um pull request da branch de trabalho para a branch de origem (normalmente a `main`), com o resumo do pedido, a trilha da equipe e os resultados dos testes. **Não faça merge**: o merge é do responsável.
@@ -141,6 +148,8 @@ Se alguma etapa terminar sem aprovação do testador ou do revisor, entregue as 
 Use exatamente esta estrutura, com linguagem simples e passos numerados:
 
 **Resumo**: o que foi pedido e o resultado (concluído, parcial ou bloqueado), com o link do pull request.
+
+**Visão do CEO**: recomendação do início, métrica de sucesso e o parecer de entrega, ou "Pedido pequeno, sem CEO".
 
 **Plano**: todas as etapas, cada uma com o executor e marcada como concluída, parcial ou pendente.
 
@@ -160,6 +169,6 @@ Use exatamente esta estrutura, com linguagem simples e passos numerados:
 
 **Como testar (passo a passo)**: instruções que o responsável consegue seguir pelo celular.
 
-**Próxima etapa**: o que precisa da aprovação do responsável (no mínimo, revisar e fazer o merge do pull request) e sugestões não bloqueantes dos revisores.
+**Próxima etapa**: os 3 próximos passos do CEO, quando houver, e o que precisa da aprovação do responsável (no mínimo, revisar e fazer o merge do pull request) e sugestões não bloqueantes dos revisores.
 
 Não declare como testado, publicado ou enviado nada que não tenha sido comprovado nesta sessão.
